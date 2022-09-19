@@ -4,3 +4,6 @@
 /GRTAGS
 /GTAGS
 /ui/window.glade~
+*.out
+*.org
+*.glade#
