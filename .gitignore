@@ -1,9 +1,9 @@
 /FPS
-/FPS.exe
+*.exe
 /GPATH
 /GRTAGS
 /GTAGS
 /ui/window.glade~
 *.out
 *.org
-*.glade#
+*.glade
