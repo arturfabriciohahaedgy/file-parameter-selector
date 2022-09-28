@@ -1,13 +1,17 @@
 CC = cc
-PKG-CONFIG= `pkg-config --cflags --libs gtk+-3.0`
+PKG-FLAGS= `pkg-config --cflags gtk+-3.0`
+PKG-LIBS= `pkg-config --libs gtk+-3.0`
 WINDOWSFLAGS = -Wall -Wextra -pipe -O2 -Wl,-export-all-symbols
 CFLAGS = -Wall -Wextra -pipe -O2 -export-dynamic
 
 FPS: src/main.c src/window.c src/files.c
-	${CC} src/main.c src/window.c src/files.c -o FPS ${PKG-CONFIG} ${CFLAGS}
+	${CC} ${PKG-FLAGS} ${CFLAGS} src/main.c src/window.c src/files.c -o FPS ${PKG-LIBS}
+
+debug: src/main.c src/window.c src/files.c
+	${CC} -g ${PKG-FLAGS} ${CFLAGS} -g src/main.c src/window.c src/files.c -o fps-debug ${PKG-LIBS}
 
 windows: src/main.c src/window.c src/files.c
-	${CC} src/main.c src/window.c src/files.c -o FPS ${PKG-CONFIG} ${WINDOWSFLAGS}
+	${CC} ${PKG-FLAGS} ${WINDOWSFLAGS} src/main.c src/window.c src/files.c -o FPS ${PKG-LIBS}
 
 windebug: src/main.c src/window.c src/files.c
-	${CC} -g src/main.c src/window.c src/files.c -o FPS ${PKG-CONFIG} ${WINDOWSFLAGS}
+	${CC} -g ${PKG-FLAGS} ${WINDOWSFLAGS} -g src/main.c src/window.c src/files.c -o fps-debug ${PKG-LIBS}
