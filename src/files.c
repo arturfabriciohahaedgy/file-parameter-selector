@@ -98,7 +98,6 @@ resolvepath(char* basepath, int indentlevel, Arguments *arg)
     char          *dirlevel;
 
     dirlevel = addlevel(indentlevel);
-
     addargument(arg, dirlevel);
 
     folder = opendir(basepath);

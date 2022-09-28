@@ -1,3 +1,4 @@
+#include <gtk/gtk.h>
 #include "files.h"
 
 int main(int argc, char *argv[]) {
