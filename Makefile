@@ -8,3 +8,6 @@ FPS: src/main.c src/window.c src/files.c
 
 windows: src/main.c src/window.c src/files.c
 	${CC} src/main.c src/window.c src/files.c -o FPS ${PKG-CONFIG} ${WINDOWSFLAGS}
+
+windebug: src/main.c src/window.c src/files.c
+	${CC} -g src/main.c src/window.c src/files.c -o FPS ${PKG-CONFIG} ${WINDOWSFLAGS}

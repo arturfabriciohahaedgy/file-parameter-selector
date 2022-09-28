@@ -1,6 +1,8 @@
 #include "files.h"
-#include "window.h"
 
 int main(int argc, char *argv[]) {
-    initialize(argc, argv);
+    int init = initialize(argc, argv);
+    if (init != 0) {
+	return 1;
+    }
 }
