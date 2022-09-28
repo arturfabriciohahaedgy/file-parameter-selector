@@ -84,7 +84,7 @@ on_buttoncontinue_clicked(GtkButton *b)
     Arguments  arg;
     int        currentlevel;
 
-    initarguments(&arg, 10);
+    initarguments(&arg, 40);
 
     /* gets text from textbox of the first screen */
     path = gtk_entry_buffer_get_text(entrybuffer);

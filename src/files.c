@@ -119,12 +119,14 @@ resolvepath(char* basepath, int indentlevel, Arguments *arg)
 	    g_print("sdasdasdsad: %s\n", path);
 	    if (filetype(path) == FILE) {
 		addargument(arg, filename);
-		/* g_print("File: %s\n", filename); */
+		g_print("File: %s\n", filename);
 	    } else if (filetype(path) == FOLDER) {
-		/* g_print("Indent level: %d\n", indentlevel); */
-		/* g_print("Folder: %s\n", filename); */
+		g_print("Indent level: %d\n", indentlevel);
+		g_print("Folder: %s\n", filename);
 		addargument(arg, filename);
 		resolvepath(path, indentlevel+1, arg);
+		dirlevel = addlevel(indentlevel);
+		addargument(arg, dirlevel);
 	    }
 	}
     }
