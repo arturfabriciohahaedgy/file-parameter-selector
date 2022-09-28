@@ -1,19 +1,27 @@
 
 # Table of Contents
 
-1.  [Install instructions](#org2bda01e)
-    1.  [Windows](#orgb316134)
-    2.  [Linux](#org2b61af0)
+1.  [Disclaimer](#org48275b1)
+2.  [Install instructions](#orgf6e4709)
+    1.  [Windows](#org6a213af)
+    2.  [Linux](#org21d0dcb)
 
 A project that aims to be a GUI frontend to select files and then use then as arguments of a shell command.
 
 
-<a id="org2bda01e"></a>
+<a id="org48275b1"></a>
+
+# Disclaimer
+
+The program is still in development and so you may see a lot of `printf()` and `g_print` for debugging. I'm also just starting to learn C and is my first experience with GTK and so the code isn't very efficient as you can imagine&#x2026;
+
+
+<a id="orgf6e4709"></a>
 
 # Install instructions
 
 
-<a id="orgb316134"></a>
+<a id="org6a213af"></a>
 
 ## Windows
 
@@ -31,7 +39,7 @@ A project that aims to be a GUI frontend to select files and then use then as ar
         make windows #don't forget to write windows after make!
 
 
-<a id="org2b61af0"></a>
+<a id="org21d0dcb"></a>
 
 ## Linux
 
@@ -50,4 +58,6 @@ Use make:
 
     cd file-parameter-selector
     make
+
+Don't forget to add to path if you want to execute it globally!
 
