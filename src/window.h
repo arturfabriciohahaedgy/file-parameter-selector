@@ -7,4 +7,4 @@ typedef struct {
     size_t  size;
 } Arguments;
 
-int initialize(int, char*[]);
+int initialize();

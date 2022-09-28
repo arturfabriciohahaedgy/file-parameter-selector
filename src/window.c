@@ -46,6 +46,7 @@ GtkEntryBuffer *entrybuffer;
 
 void
 initarguments(Arguments *a, size_t initialsize)
+/* initialize dynamic array */
 {
     a->array = malloc(initialsize * sizeof(char*));
     a->used = 0;
@@ -53,7 +54,9 @@ initarguments(Arguments *a, size_t initialsize)
 }
 
 void
-freearguments(Arguments *a) {
+freearguments(Arguments *a)
+/* free dynamic array */
+{
     free(a->array);
     a->array = NULL;
     a->used = a->size = 0;
@@ -61,6 +64,7 @@ freearguments(Arguments *a) {
 
 int
 getlevel(char *level)
+/* converts "||LEVEL[number]" string to it's respecitve integer, otherwise returns 99 to indicate that it's a file */
 {
     int numberlevel;
 
@@ -74,6 +78,7 @@ getlevel(char *level)
 int
 on_buttoncontinue_clicked(GtkButton *b)
 /* function to execute when button with the "ok"/"accept" icon is clicked */
+/* A lot of debbuing in this function, please ignore it... I'm fixing it */
 {
     char      *path;
     Arguments  arg;
@@ -81,6 +86,7 @@ on_buttoncontinue_clicked(GtkButton *b)
 
     initarguments(&arg, 10);
 
+    /* gets text from textbox of the first screen */
     path = gtk_entry_buffer_get_text(entrybuffer);
     if (path == NULL) {
 	return 1;
@@ -159,13 +165,12 @@ on_buttonfolder_clicked(GtkButton *b)
 }
 
 int
-initialize(int argc, char *argv[])
+initialize()
 /* function to initialize the main window */
 {
     char           *gladepath;
 
     gladepath = "./ui/window.glade"; /* path to xml builder file */
-    gtk_init(&argc, &argv);
     window.Bui = gtk_builder_new_from_file(gladepath); /* builds xml file */
     window.Win = GTK_WIDGET(gtk_builder_get_object(window.Bui, "window"));
     window.ParenWin = GTK_WINDOW(window.Win); /* gets window itself */

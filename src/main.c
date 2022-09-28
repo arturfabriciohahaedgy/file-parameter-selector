@@ -1,7 +1,8 @@
 #include "files.h"
 
 int main(int argc, char *argv[]) {
-    int init = initialize(argc, argv);
+    gtk_init(&argc, &argv);
+    int init = initialize();
     if (init != 0) {
 	return 1;
     }
