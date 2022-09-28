@@ -1,27 +1,27 @@
 
 # Table of Contents
 
-1.  [Disclaimer](#org48275b1)
-2.  [Install instructions](#orgf6e4709)
-    1.  [Windows](#org6a213af)
-    2.  [Linux](#org21d0dcb)
+1.  [Disclaimer](#orgc8dd95b)
+2.  [Install instructions](#org537c188)
+    1.  [Windows](#org568d29e)
+    2.  [Linux](#org7a50f64)
 
 A project that aims to be a GUI frontend to select files and then use then as arguments of a shell command.
 
 
-<a id="org48275b1"></a>
+<a id="orgc8dd95b"></a>
 
 # Disclaimer
 
 The program is still in development and so you may see a lot of `printf()` and `g_print` for debugging. I'm also just starting to learn C and is my first experience with GTK and so the code isn't very efficient as you can imagine&#x2026;
 
 
-<a id="orgf6e4709"></a>
+<a id="org537c188"></a>
 
 # Install instructions
 
 
-<a id="org6a213af"></a>
+<a id="org568d29e"></a>
 
 ## Windows
 
@@ -39,7 +39,7 @@ The program is still in development and so you may see a lot of `printf()` and `
         make windows #don't forget to write windows after make!
 
 
-<a id="org21d0dcb"></a>
+<a id="org7a50f64"></a>
 
 ## Linux
 
