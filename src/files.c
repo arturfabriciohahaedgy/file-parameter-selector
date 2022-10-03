@@ -9,15 +9,28 @@
 #include <limits.h>
 #include <string.h>
 #include <error.h>
+#include <errno.h>
 
 #include "files.h"
 
 #define FILE 1
 #define FOLDER 0
+#define BUFFER_SIZE 256
 
+int islevel(char *);
 int filetype(const char*);
 void addargument(Arguments*, char*);
-char *addlevel(int);
+char *returnlevel(int);
+
+int
+islevel(char *argument)
+/* returns LEVEL(0) if *argument has the string used to indicate levels, returns FILE(1) if not */
+{
+    if(strncmp(argument, "||LEVEL_", 8) == LEVEL)
+	return LEVEL;
+    else
+	return NOTLEVEL;
+}
 
 int 
 filetype(const char *path)
@@ -26,6 +39,40 @@ filetype(const char *path)
     struct stat path_stat;
     stat(path, &path_stat);
     return S_ISREG(path_stat.st_mode);
+}
+
+void
+addargument(Arguments *arg, char *insertvalue)
+/* Adds *insertvalue in argument array, double the size of the array if it is at max */
+{
+    if (arg->used == arg->size) {
+	arg->size *= 2;
+	arg->array = realloc(arg->array, arg->size * sizeof(char*));
+    }
+    arg->array[arg->used++] = insertvalue;
+}
+
+char *
+returnlevel(int number)
+/* Adds an indication of the dirlevel with a very specific string which no sane person would use to name directories */
+{
+    const char   *prefix;
+    char    charnumber;
+    char   *concatbuffer;
+
+    concatbuffer = 0;
+    /* allocs non-local memory */
+    concatbuffer = (char*)malloc(BUFFER_SIZE * sizeof(char*));
+
+    /* prefix for string concat */
+    prefix = "||LEVEL_";
+    strcpy(concatbuffer, prefix);
+    /* turns int to char */
+    charnumber = '0' + number;
+    strncat(concatbuffer, &charnumber, 1);
+    strcat(concatbuffer, "||");
+
+    return concatbuffer;
 }
 
 void
@@ -41,53 +88,33 @@ returndir(void)
 }
 
 void
-addargument(Arguments *arg, char *insertvalue)
-/* Adds *insertvalue in argument array, double the size of the array if it is at max */
+initarguments(Arguments *a, size_t initialsize)
+/* initialize dynamic array */
 {
-    if (arg->used == arg->size) {
-	arg->size *= 2;
-	arg->array = realloc(arg->array, arg->size * sizeof(char*));
-    }
-    arg->array[arg->used++] = insertvalue;
-}
-
-char *
-addlevel(int number)
-/* Adds an indication of the dirlevel with a very specific string which no sane person would use to name directories */
-{
-    char   *prefix;
-    char   *stringnumber;
-    char    charnumber;
-    size_t  sizenumber;
-    size_t  sizeprefix;
-    /* result of concatenation using memcpy() */
-    char   *concatenated;
-
-    /* prefix for string concat */
-    prefix = "||LEVEL_";
-    /* turns int to char */
-    charnumber = '0' + number;
-    /* really dumb solution but... it is what it is, it isn't what it isn't */
-    stringnumber = &charnumber;
-
-    /* gets size of chars */
-    sizeprefix = sizeof(prefix);
-    sizenumber = sizeof(stringnumber);
-
-    concatenated = malloc(sizenumber + sizeprefix + 1);
-    if (!concatenated)
-	return concatenated;
-
-    memcpy(concatenated, prefix, sizeprefix);
-    memcpy(concatenated + sizeprefix, stringnumber, sizenumber + 1);
-
-    /* printf("concat: %s\n", concatenated); */
-
-    return concatenated;
+    a->array = malloc(initialsize * sizeof(char*));
+    a->used = 0;
+    a->size = initialsize;
 }
 
 void
-resolvepath(char* basepath, int indentlevel, Arguments *arg)
+freearguments(Arguments *a)
+/* free dynamic array */
+{
+    int us = a->used;
+
+    for (int i = 0; i < us; i++) {
+	if((islevel(a->array[i])) == 0)
+	    free(a->array[i]);
+    }
+
+    free(a->array);
+    a->array = NULL;
+    a->used = a->size = 0;
+}
+
+
+void
+resolvepath(const char* basepath, int indentlevel, Arguments *arg)
 /* recursively parse directories and keep track of hierarchy */
 /* TODO: Fix path parsing issue */
 {
@@ -97,7 +124,8 @@ resolvepath(char* basepath, int indentlevel, Arguments *arg)
     char          *filename;
     char          *dirlevel;
 
-    dirlevel = addlevel(indentlevel);
+    dirlevel = returnlevel(indentlevel);
+    g_print("dirlevel: %s\n", dirlevel);
     addargument(arg, dirlevel);
 
     folder = opendir(basepath);
@@ -116,7 +144,6 @@ resolvepath(char* basepath, int indentlevel, Arguments *arg)
 	    strcat(path, "/");
 	    #endif 
 	    strcat(path, filename);
-	    g_print("sdasdasdsad: %s\n", path);
 	    if (filetype(path) == FILE) {
 		addargument(arg, filename);
 		g_print("File: %s\n", filename);
@@ -125,7 +152,8 @@ resolvepath(char* basepath, int indentlevel, Arguments *arg)
 		g_print("Folder: %s\n", filename);
 		addargument(arg, filename);
 		resolvepath(path, indentlevel+1, arg);
-		dirlevel = addlevel(indentlevel);
+		dirlevel = returnlevel(indentlevel);
+		g_print("dirlevel: %s\n", dirlevel);
 		addargument(arg, dirlevel);
 	    }
 	}
