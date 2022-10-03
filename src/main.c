@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "files.h"
+#include "window.h"
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);

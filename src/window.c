@@ -11,13 +11,16 @@
 #include <error.h>
 
 #include "files.h"
+#include "window.h"
 
 /* functions used by GTK/Glade */
-void on_buttonfolder_clicked(GtkButton*);
-int on_buttoncontinue_clicked(GtkButton*);
+void on_buttonfolder_clicked();
+int on_buttoncontinue_clicked();
 
 /* normal functions */
-void addrows();
+void initarguments(Arguments*, size_t);
+void freearguments(Arguments*);
+int getlevel(char*);
 
 typedef struct {
     GtkTreeIter mainiter;
@@ -44,45 +47,29 @@ GtkWidget      *textbox;
 GtkWidget      *notebook;
 GtkEntryBuffer *entrybuffer;
 
-void
-initarguments(Arguments *a, size_t initialsize)
-/* initialize dynamic array */
-{
-    a->array = malloc(initialsize * sizeof(char*));
-    a->used = 0;
-    a->size = initialsize;
-}
-
-void
-freearguments(Arguments *a)
-/* free dynamic array */
-{
-    free(a->array);
-    a->array = NULL;
-    a->used = a->size = 0;
-}
 
 int
 getlevel(char *level)
-/* converts "||LEVEL[number]" string to it's respecitve integer, otherwise returns 99 to indicate that it's a file */
+/* converts "||LEVEL[number]||" string to it's respecitve integer, otherwise returns NOTLEVEL(99 )to indicate that it's a file */
 {
     int numberlevel;
 
-    if (strncmp(level, "||LEVEL_", 8) == 0) {
+    if (strncmp(level, "||LEVEL_", 8) == LEVEL) {
 	numberlevel = level[8] - '0';
 	return numberlevel;
     } else
-	return 99;
+	return NOTLEVEL;
 }
 
+
 int
-on_buttoncontinue_clicked(GtkButton *b)
+on_buttoncontinue_clicked()
 /* function to execute when button with the "ok"/"accept" icon is clicked */
 /* A lot of debbuing in this function, please ignore it... I'm fixing it */
 {
-    char      *path;
-    Arguments  arg;
-    int        currentlevel;
+    const char      *path;
+    Arguments        arg;
+    /* int        currentlevel; */
 
     initarguments(&arg, 40);
 
@@ -138,11 +125,16 @@ on_buttoncontinue_clicked(GtkButton *b)
 
     freearguments(&arg);
 
+    /* for (int i = 0; i < us; i++) { */
+    /* 	if ((islevel(arg.array[i])) == 0) */
+    /* 	    free(arg.array[i]); */
+    /* } */
+
     return 0;
 }
 
 void
-on_buttonfolder_clicked(GtkButton *b)
+on_buttonfolder_clicked()
 /* function to execute when the button with the "folder" icon is clicked */
 {
     GtkFileChooserNative *native;
@@ -170,7 +162,7 @@ initialize()
 {
     char           *gladepath;
 
-    gladepath = "./ui/window.glade"; /* path to xml builder file */
+    gladepath = ""; /* path to xml builder file */
     window.Bui = gtk_builder_new_from_file(gladepath); /* builds xml file */
     window.Win = GTK_WIDGET(gtk_builder_get_object(window.Bui, "window"));
     window.ParenWin = GTK_WINDOW(window.Win); /* gets window itself */
