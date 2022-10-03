@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Gets fullpath of window.glade
+gladepath=$(realpath ./ui/window.glade)
+
+sed -i "s|gladepath = \".*\"|gladepath = \"$gladepath\"|g" ./src/window.c
