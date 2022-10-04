@@ -1,3 +1,7 @@
+/*
+ * Frontend of the program. Everything related to display the GUI on screen is in here.
+ */
+
 #include <gtk/gtk.h>
 
 #include <sys/types.h>
@@ -10,17 +14,12 @@
 #include <string.h>
 #include <error.h>
 
-#include "files.h"
+#include "fps.h"
 #include "window.h"
 
 /* functions used by GTK/Glade */
 void on_buttonfolder_clicked();
 int on_buttoncontinue_clicked();
-
-/* normal functions */
-void initarguments(Arguments*, size_t);
-void freearguments(Arguments*);
-int getlevel(char*);
 
 typedef struct {
     GtkTreeIter mainiter;
@@ -34,33 +33,6 @@ typedef struct {
     GtkTreeIter iterchild8;
     GtkTreeIter iterchild9;
 } Dirlevels;
-
-typedef struct {
-    GtkWidget      *Win;
-    GtkBuilder     *Bui;
-    GtkWindow      *ParenWin;
-} Window; /* structure that holds main window */
-
-/* global variables to be able to access functions */
-Window          window;
-GtkWidget      *textbox;
-GtkWidget      *notebook;
-GtkEntryBuffer *entrybuffer;
-
-
-int
-getlevel(char *level)
-/* converts "||LEVEL[number]||" string to it's respecitve integer, otherwise returns NOTLEVEL(99 )to indicate that it's a file */
-{
-    int numberlevel;
-
-    if (strncmp(level, "||LEVEL_", 8) == LEVEL) {
-	numberlevel = level[8] - '0';
-	return numberlevel;
-    } else
-	return NOTLEVEL;
-}
-
 
 int
 on_buttoncontinue_clicked()
@@ -154,25 +126,4 @@ on_buttonfolder_clicked()
 	g_free(foldername);
     }
     g_object_unref(native);
-}
-
-int
-initialize()
-/* function to initialize the main window */
-{
-    char           *gladepath;
-
-    gladepath = ""; /* path to xml builder file */
-    window.Bui = gtk_builder_new_from_file(gladepath); /* builds xml file */
-    window.Win = GTK_WIDGET(gtk_builder_get_object(window.Bui, "window"));
-    window.ParenWin = GTK_WINDOW(window.Win); /* gets window itself */
-    gtk_window_set_title(window.ParenWin, "FPS");
-    g_signal_connect(window.Win, "destroy", G_CALLBACK(gtk_main_quit), NULL); /* makes application close it's resources after finishing windowk */
-    gtk_builder_connect_signals(window.Bui, NULL);
-    notebook = GTK_WIDGET(gtk_builder_get_object(window.Bui, "notebook"));
-    textbox = GTK_WIDGET(gtk_builder_get_object(window.Bui, "textbox"));
-    gtk_widget_show(window.Win); /* shows main window */
-    gtk_main(); /* makes GTK look for events */
-
-    return 0;
 }
