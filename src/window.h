@@ -6,6 +6,7 @@ typedef struct {
     GtkWindow      *ParenWin;
 } Window; /* structure that holds main window */
 
+/* functions used by GTK/Glade */
 void on_buttonfolder_clicked();
 int on_buttoncontinue_clicked();
 

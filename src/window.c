@@ -41,7 +41,7 @@ on_buttoncontinue_clicked()
 {
     const char      *path;
     Arguments        arg;
-    /* int        currentlevel; */
+    /* int              us; */
 
     initarguments(&arg, 40);
 
@@ -50,57 +50,18 @@ on_buttoncontinue_clicked()
     if (path == NULL) {
 	return 1;
     }
-    g_print("path: %s\n", path);
-    resolvepath(path, 0, &arg);
+    printf("path: %s\n", path);
     gtk_notebook_next_page(GTK_NOTEBOOK(notebook));
+    resolvepath(path, 0, &arg);
+    /* us = arg.used; */
 
-    int us = arg.used;
-
+    /* printf("===============================================\n"); */
     /* for (int i = 0; i < us; i++) { */
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 1) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 2) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 3) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 4) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 5) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 6) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 7) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 8) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if ((currentlevel = getlevel(arg.array[i])) == 9) */
-    /* 	    printf("Level: %d, Folder: %s\n", currentlevel, arg.array[i-1]); */
-
-    /* 	if (getlevel(arg.array[i]) == 99) */
-    /* 	    printf("Level: %d, File: %s\n", currentlevel, arg.array[i]); */
+    /* 	printf("i: %d, arg: %s\n", i, arg.array[i]); */
     /* } */
-    printf("us: %d\n", us);
-
-    printf("===============================================\n");
-    for (int i = 0; i < us; i++) {
-	printf("MANOOO: %s\n", arg.array[i]);
-    }
-    printf("===============================================\n");
+    /* printf("===============================================\n"); */
 
     freearguments(&arg);
-
-    /* for (int i = 0; i < us; i++) { */
-    /* 	if ((islevel(arg.array[i])) == 0) */
-    /* 	    free(arg.array[i]); */
-    /* } */
 
     return 0;
 }
@@ -122,7 +83,7 @@ on_buttonfolder_clicked()
 	GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
 	foldername = gtk_file_chooser_get_filename(chooser);
 	gtk_entry_buffer_set_text(entrybuffer, foldername, -1); /* fills text box with the path to the folder selected */
-	g_print("foldername: %s\n", foldername);
+	printf("foldername: %s\n", foldername);
 	g_free(foldername);
     }
     g_object_unref(native);
