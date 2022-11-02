@@ -1,3 +1,6 @@
+# WARNING
+After some weird issues with GTK I've decided to rewrite the project using other libraries and so this repository is only here for achival purposes. The new project can be found [here](https://github.com/arturfabriciohahaedgy/file-parameter-selector-REDUX.git);
+
 # Table of Contents
 
 1.  [Disclaimer](#disclaimer-link)
